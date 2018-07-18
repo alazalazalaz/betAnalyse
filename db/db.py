@@ -1,6 +1,11 @@
 
 import pymysql
+import common.config.db as DbConfigModule
 
+
+
+dbConfig = DbConfigModule.DbConfig()
+config = dbConfig.getConfigs()
 # db = pymysql.connect('localhost', 'root', '', 'nba', charset='utf8')
 # cursor = db.cursor(pymysql.cursors.DictCursor)
 # team_sql = "select * from nba_team where tid=7 limit 1"
@@ -13,7 +18,7 @@ class Db():
 		self.database 	= database
 		self.debug 		= True
 
-		self.db 		= pymysql.connect('localhost', 'root', '', self.database, charset='utf8')
+		self.db 		= pymysql.connect(config['host'], config['user'], config['pw'], self.database, charset='utf8')
 		self.cursor 	= self.db.cursor(pymysql.cursors.DictCursor)
 
 
