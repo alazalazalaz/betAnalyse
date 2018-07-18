@@ -174,7 +174,7 @@ def updateResult(resultString):
 currentTime = int(time.time())
 db = db.Db('ds')
 data = getData()
-updateResult(data)
+# updateResult(data)
 doData(data)
 push()
 

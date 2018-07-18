@@ -1,7 +1,7 @@
 import sys
-import db as dbModule
-sys.path.append("../common/")
-import config.db as DbConfigModule
+import db.db as dbModule
+import common.config.db as DbConfigModule
+
 
 
 dbConfig = DbConfigModule.DbConfig()
