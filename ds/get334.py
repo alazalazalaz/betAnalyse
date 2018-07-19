@@ -171,18 +171,18 @@ def updateResult(resultString):
 
 	
 
-try:
-	currentTime = int(time.time())
-	db = db.Db('ds')
-	data = getData()
-	updateResult(data)
-	doData(data)
-	push()
-except Exception as e:
-	t,v,tb = sys.exc_info()
-	title = "Error:"
-	content = str(t) + str(v)
-	mail(title, content)
+# try:
+currentTime = int(time.time())
+db = db.Db('ds')
+data = getData()
+# updateResult(data)
+doData(data)
+push()
+# except Exception as e:
+# 	t,v,tb = sys.exc_info()
+# 	title = "Error:"
+# 	content = str(t) + str(v)
+# 	mail(title, content)
 	
 
 
