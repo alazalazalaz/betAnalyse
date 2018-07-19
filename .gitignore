@@ -1,2 +1,4 @@
 /common/config/*
+/db/__pycache__/*
+/ds/__pycache__/*
 

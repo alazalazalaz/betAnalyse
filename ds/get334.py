@@ -1,4 +1,4 @@
-
+import traceback
 import requests
 import time
 import json
@@ -169,14 +169,23 @@ def updateResult(resultString):
 			updateSql = "UPDATE ds_push SET result={updateResult} WHERE match_id={matchId}".format(updateResult = updateResult, matchId = matchId)
 			db.update(updateSql)
 
+	
+
+try:
+	currentTime = int(time.time())
+	db = db.Db('ds')
+	data = getData()
+	updateResult(data)
+	doData(data)
+	push()
+except Exception as e:
+	t,v,tb = sys.exc_info()
+	title = "Error:"
+	content = str(t) + str(v)
+	mail(title, content)
+	
 
 
-currentTime = int(time.time())
-db = db.Db('ds')
-data = getData()
-# updateResult(data)
-doData(data)
-push()
 
 
 

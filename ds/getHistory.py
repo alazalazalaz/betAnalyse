@@ -14,7 +14,10 @@ def getData(searchTime, page):
 	
 	url = 'https://api.dszuqiu.com/v6/diary'
 
-	data = {'day':searchTime, 'only_need':2, 'page':page, 'per_page':20, 'request_time':time.time(), 'token':'212099-e255e9d6cf8d9ae99b029aaae16b5e6c'}
+	#拉取最近的已完成的数据
+	data = {'last':1, 'page':page, 'per_page':20, 'request_time':time.time(), 'token':'212099-e255e9d6cf8d9ae99b029aaae16b5e6c'}
+	#拉取昨天的数据第一页数据为00:00开始的数据，最后一页为晚上的数据
+	# data = {'day':searchTime, 'only_need':2, 'page':page, 'per_page':20, 'request_time':time.time(), 'token':'212099-e255e9d6cf8d9ae99b029aaae16b5e6c'}
 	getResult = requests.post(url, params = data)
 
 	return getResult.text
@@ -72,8 +75,13 @@ def doData(resultString, matchTime):
 			try:
 				db.insertBatch('ds_history', keys, insertValue)
 			except Exception as e:
-				print('over')
-				exit()
+				for j in range(0, len(insertValue)):
+					try:
+						db.insertBatch('ds_history', keys, [insertValue[j]])
+					except Exception as e:
+						print('over')
+						exit()
+				
 			
 
 		return True
@@ -85,7 +93,6 @@ def main(historyDay):
 	for i in range(0, historyDay):
 		currentTime = int(time.time()) - 86400 * i
 		searchTime = time.strftime("%Y%m%d", time.localtime(currentTime))
-
 		do(searchTime)
 
 	
@@ -107,7 +114,7 @@ def filterLeague(leagueName):
 
 
 db = db.Db('ds')
-historyDay = 3
+historyDay = 2
 main(historyDay)
 
 
