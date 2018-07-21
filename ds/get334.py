@@ -142,8 +142,9 @@ def updateResult(resultString):
 	matchList = resultJson['rs']
 	for i in range(0, len(matchList)):
 		matchData = matchList[i]
-		status = matchData['status']
-		if status == '-1':
+		#比赛状态，int为分钟，’半‘表示半场结束，’全‘表示全场结束
+		matchStatus = str(matchData['status'])
+		if matchStatus == '-1':
 			continue
 
 		events = matchData['events_graph']['events']
@@ -162,16 +163,23 @@ def updateResult(resultString):
 			for j in range(0, len(events)):
 				t = events[j]['t']
 				status = events[j]['status']
-				if ((t == 'gg') or (t == 'hg')) and int(status) <= 45:
+				if (status < '30') and ((t == 'gg') or (t == 'hg')):
+					num += 1
+				elif (status >= '30') and ((t == 'gg') or (t == 'hg') or (t == 'gp') or (t == 'hp')):
 					num += 1
 			
 			if num >= 4:
 				updateResult = 1
-			else:
-				updateResult = -1
+				updateSql = "UPDATE ds_push SET result={updateResult} WHERE match_id={matchId}".format(updateResult = updateResult, matchId = matchId)
+				db.update(updateSql)
+				continue
 
-			updateSql = "UPDATE ds_push SET result={updateResult} WHERE match_id={matchId}".format(updateResult = updateResult, matchId = matchId)
-			db.update(updateSql)
+			if matchStatus == '半' or matchStatus == '全' or matchStatus > '45':
+				updateResult = -1
+				updateSql = "UPDATE ds_push SET result={updateResult} WHERE match_id={matchId}".format(updateResult = updateResult, matchId = matchId)
+				db.update(updateSql)
+				continue
+			
 
 	
 
