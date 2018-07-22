@@ -84,6 +84,7 @@ def push():
 		updateSql = "UPDATE ds_push SET is_push=1 WHERE match_id in (" + str(','.join(pushIds)) + ")"
 		db.update(updateSql)
 
+		#历史记录
 		historySql = "SELECT * FROM ds_push order by id desc limit 20"
 		historyData = db.find(historySql)
 		historyContent = "\r\n<br>\r\n<br>历史记录\r\n<br>"
@@ -102,6 +103,17 @@ def push():
 				tmp = "          " + historyData[k]['league_name'] + "\r\n<br>(" + status + ")---" + historyData[k]['host_name'] + historyData[k]['guest_name'] + "\r\n<br>"
 				
 				historyContent = historyContent + tmp
+		
+		#历史rate
+		winNumSql = "SELECT count(*) as win from ds_push where result=1"
+		loseNumSql= "SELECT count(*) as lose from ds_push where result=-1"
+		win = db.find(winNumSql)
+		lose = db.find(loseNumSql)
+		winNum = int(win[0]['win'])
+		loseNum = int(lose[0]['lose'])
+		rate = round(100*winNum/(winNum+loseNum), 2)
+
+		mailContent += str(rate) + "%<br>"
 		mailContent += historyContent
 		mail(mailTitle, mailContent)
 
@@ -179,10 +191,8 @@ def updateResult(resultString):
 				updateSql = "UPDATE ds_push SET result={updateResult} WHERE match_id={matchId}".format(updateResult = updateResult, matchId = matchId)
 				db.update(updateSql)
 				continue
-			
 
-	
-
+#采用算法05
 try:
 	currentTime = int(time.time())
 	db = db.Db('ds')

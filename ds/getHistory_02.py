@@ -92,6 +92,7 @@ def main():
 # global_table_name = 'ds_history_01'
 
 #02算法，33分钟(不含)前等于3个，半场>3个，并且20分钟前<3，算红
+#43%命中率
 global_table_name = 'ds_history_02'
 db = db.Db('ds')
 main()

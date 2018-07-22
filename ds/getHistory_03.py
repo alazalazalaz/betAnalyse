@@ -95,6 +95,7 @@ def main():
 # global_table_name = 'ds_history_02'
 
 #03算法，同01算法，只是时间从33=>30
+##51%命中率
 global_table_name = 'ds_history_03'
 db = db.Db('ds')
 main()
