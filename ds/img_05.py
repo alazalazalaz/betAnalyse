@@ -75,9 +75,9 @@ def main():
 
 db = db.Db('ds')
 global date
-date = '20180500'
+date = '20180425'
 global endDate
-endDate = '20180505'
+endDate = '20180500'
 global_table_name = 'ds_history_05'
 main()
 

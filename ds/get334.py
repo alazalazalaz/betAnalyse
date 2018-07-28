@@ -204,7 +204,7 @@ except Exception as e:
 	t,v,tb = sys.exc_info()
 	title = "Error:"
 	content = str(t) + str(v)
-	mail(title, content)
+	# mail(title, content)
 	
 
 
